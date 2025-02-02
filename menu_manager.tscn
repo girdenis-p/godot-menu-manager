@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0hpbhkf6n7if"]
+
+[ext_resource type="Script" path="res://addons/menu_manager/menu_manager.gd" id="1_q5q00"]
+[ext_resource type="Script" path="res://addons/menu_manager/open_action.gd" id="2_m6wui"]
+[ext_resource type="Script" path="res://addons/menu_manager/request_action.gd" id="3_ya6d6"]
+
+[node name="MenuManager" type="Control" node_paths=PackedStringArray("main_menu")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_q5q00")
+main_menu = NodePath("Main")
+
+[node name="Main" type="Node" parent="."]
+script = ExtResource("2_m6wui")
+layout = 0
+hint_text = "The Best Game Ever"
+
+[node name="Credits" type="Node" parent="Main"]
+script = ExtResource("2_m6wui")
+hint_text = ""
+
+[node name="Start" type="Node" parent="Main"]
+script = ExtResource("3_ya6d6")
+
+[node name="Options" type="Node" parent="Main"]
+script = ExtResource("2_m6wui")
+hint_text = "Options"
+
+[node name="Audio" type="Node" parent="Main/Options"]
+script = ExtResource("2_m6wui")
+hint_text = ""
+
+[node name="Master" type="Node" parent="Main/Options/Audio"]
+script = ExtResource("2_m6wui")
+hint_text = ""
+
+[node name="Game" type="Node" parent="Main/Options"]
+script = ExtResource("2_m6wui")
+hint_text = "Game Options"
+
+[node name="Difficulty" type="Node" parent="Main/Options/Game"]
+script = ExtResource("2_m6wui")
+hint_text = ""
+
+[node name="Reset Data" type="Node" parent="Main/Options/Game"]
+script = ExtResource("3_ya6d6")
+
+[node name="Controls" type="Node" parent="Main/Options"]
+script = ExtResource("2_m6wui")
+hint_text = ""
+
+[node name="Exit" type="Node" parent="Main"]
+script = ExtResource("3_ya6d6")
