@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://d0hpbhkf6n7if"]
 
-[ext_resource type="Script" path="res://addons/menu_manager/menu_manager.gd" id="1_q5q00"]
+[ext_resource type="Script" path="res://main.gd" id="1_1afvd"]
 [ext_resource type="Script" path="res://addons/menu_manager/open_action.gd" id="2_m6wui"]
 [ext_resource type="Script" path="res://addons/menu_manager/request_action.gd" id="3_ya6d6"]
 
@@ -11,7 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_q5q00")
+script = ExtResource("1_1afvd")
 main_menu = NodePath("Main")
 
 [node name="Main" type="Node" parent="."]
@@ -55,3 +55,32 @@ hint_text = ""
 
 [node name="Exit" type="Node" parent="Main"]
 script = ExtResource("3_ya6d6")
+
+[node name="Game" type="Node" parent="."]
+script = ExtResource("2_m6wui")
+hint_text = ""
+
+[node name="Attack" type="Node" parent="Game"]
+script = ExtResource("2_m6wui")
+hint_text = ""
+
+[node name="Enemy A" type="Node" parent="Game/Attack"]
+script = ExtResource("3_ya6d6")
+
+[node name="Enemy B" type="Node" parent="Game/Attack"]
+script = ExtResource("3_ya6d6")
+
+[node name="Spell" type="Node" parent="Game"]
+script = ExtResource("2_m6wui")
+hint_text = ""
+
+[node name="Fireball" type="Node" parent="Game/Spell"]
+script = ExtResource("3_ya6d6")
+
+[node name="Back To Main Menu" type="Node" parent="Game"]
+script = ExtResource("3_ya6d6")
+
+[connection signal="action_requested" from="." to="." method="_on_action_requested"]
+[connection signal="requested" from="Main/Start" to="." method="_on_start_requested"]
+[connection signal="requested" from="Game/Spell/Fireball" to="." method="_on_fireball_requested"]
+[connection signal="requested" from="Game/Back To Main Menu" to="." method="_on_back_to_main_menu_requested"]

@@ -3,6 +3,9 @@
 class_name MenuManager
 extends Control
 
+## Emitted when a request action is pressed
+signal action_requested(action : StringName)
+
 ## Menu to be displayed initially
 @export var main_menu : OpenAction:
 	set(mm):
@@ -12,6 +15,8 @@ extends Control
 var menus := {}
 
 var _stack : Array[NodePath] = []
+
+@onready var back_button = Button.new()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -25,8 +30,29 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _append_to_stack(menu : NodePath) -> void:
 	if not _stack.is_empty():
 		menus[_stack.back()].hide()
+		back_button.show()
 	_stack.append(menu)
 	menus[_stack.back()].show()
+
+
+func _pop_stack() -> void:
+	if not _stack.is_empty():
+		menus[_stack.back()].hide()
+		_stack.pop_back()
+		
+		if _stack.size() <= 1:
+			back_button.hide()
+		
+		if not _stack.is_empty():
+			menus[_stack.back()].show()
+
+
+func _clear_stack() -> void:
+	if not _stack.is_empty():
+		menus[_stack.back()].hide()
+		_stack.clear()
+	
+	back_button.hide()
 
 
 func _generate_open_action_menu(open_action : OpenAction) -> void:
@@ -44,12 +70,38 @@ func _generate_menu_behaviour(open_action : OpenAction) -> void:
 			open_action._buttons[child.name].connect("pressed", func ():
 				_append_to_stack(get_path_to(child))
 			)
+		elif child is RequestAction:
+			open_action._buttons[child.name].connect("pressed", func ():
+				child.requested.emit()
+				if child.action != "":
+					action_requested.emit(child.action)
+				else:
+					action_requested.emit(child.name.to_lower())
+			)
 
 
 func _ready() -> void:
+	back_button.connect("pressed", _pop_stack)
+	back_button.text = "<"
+	back_button.anchor_left = 0.05
+	back_button.anchor_right = 0.15
+	back_button.anchor_top = 0.05
+	back_button.anchor_bottom = 0.15
+	add_child(back_button)
+	back_button.hide()
+	
 	for child in get_children():
 		if child is OpenAction:
 			_generate_open_action_menu(child)
 	
 	if main_menu != null:
 		_append_to_stack(get_path_to(main_menu))
+
+
+func open(menu : OpenAction) -> void:
+	_clear_stack()
+	_append_to_stack(get_path_to(menu))
+
+
+func close() -> void:
+	_clear_stack()
