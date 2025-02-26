@@ -78,6 +78,10 @@ func _generate_menu_behaviour(open_action : OpenAction) -> void:
 				else:
 					action_requested.emit(child.name.to_lower())
 			)
+		elif child is CopyOpenAction:
+			open_action._buttons[child.name].connect("pressed", func():
+				_append_to_stack(get_path_to(child.open_action))
+			)
 
 
 func _ready() -> void:

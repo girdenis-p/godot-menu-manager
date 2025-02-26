@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://d0hpbhkf6n7if"]
+[gd_scene load_steps=5 format=3 uid="uid://d0hpbhkf6n7if"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_1afvd"]
 [ext_resource type="Script" path="res://addons/menu_manager/open_action.gd" id="2_m6wui"]
 [ext_resource type="Script" path="res://addons/menu_manager/request_action.gd" id="3_ya6d6"]
+[ext_resource type="Script" path="res://addons/menu_manager/copy_open_action.gd" id="4_6f71t"]
 
 [node name="MenuManager" type="Control" node_paths=PackedStringArray("main_menu")]
 layout_mode = 3
@@ -18,10 +19,6 @@ main_menu = NodePath("Main")
 script = ExtResource("2_m6wui")
 layout = 0
 hint_text = "The Best Game Ever"
-
-[node name="Credits" type="Node" parent="Main"]
-script = ExtResource("2_m6wui")
-hint_text = ""
 
 [node name="Start" type="Node" parent="Main"]
 script = ExtResource("3_ya6d6")
@@ -53,6 +50,10 @@ script = ExtResource("3_ya6d6")
 script = ExtResource("2_m6wui")
 hint_text = ""
 
+[node name="Credits" type="Node" parent="Main"]
+script = ExtResource("2_m6wui")
+hint_text = ""
+
 [node name="Exit" type="Node" parent="Main"]
 script = ExtResource("3_ya6d6")
 
@@ -76,6 +77,10 @@ hint_text = ""
 
 [node name="Fireball" type="Node" parent="Game/Spell"]
 script = ExtResource("3_ya6d6")
+
+[node name="Options" type="Node" parent="Game" node_paths=PackedStringArray("open_action")]
+script = ExtResource("4_6f71t")
+open_action = NodePath("../../Main/Options")
 
 [node name="Back To Main Menu" type="Node" parent="Game"]
 script = ExtResource("3_ya6d6")
